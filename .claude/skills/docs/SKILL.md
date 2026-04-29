@@ -1,251 +1,182 @@
 ---
-name: dotnet-pr-review
+name: docs
 description: >
-  Review a pull request for a .NET 10 / C# project. Trigger this skill whenever
-  the user says "review this PR", "review my changes", "look at this diff",
-  "give feedback on my code", "check my PR", "code review", or pastes a diff,
-  file list, or branch description and asks for feedback. Runs four sequential
-  review passes: conventions compliance, security audit, test coverage check,
-  and a final verdict with a prioritised finding list.
+  Write best-practice markdown documentation files that are clear, human-readable,
+  and easy to navigate. Trigger this skill whenever the user asks to write a README,
+  create documentation, document a project, write a guide, create a how-to, write
+  API docs, write contributing guidelines, write a changelog, create an architecture
+  doc, document a CLI tool, write a wiki page, or says "document this", "write docs
+  for", "create a README for", or "help me document". Also trigger when the user
+  shares code or a project and asks how to explain it to others — even if they don't
+  use the word "documentation". If someone wants other people to understand something,
+  this skill applies.
 ---
 
-# PR Review
+# Markdown Documentation
 
-A structured, four-pass review of every pull request against the project's
-conventions, security standards, and testing requirements.
+Write documentation that real people actually read. Clear structure, plain language,
+and just enough formatting — no more.
 
-## How to run a PR review
+## Core principle
 
-Work through all four passes in order. Never skip a pass, even if the diff looks small.
-A change that is two lines of code can introduce a security vulnerability or bypass a
-test that would have caught a regression.
-
-Read the relevant reference file at the start of each pass — they contain the
-detailed checklists and scoring rules.
-
----
-
-## Pass 1 — Conventions compliance
-
-**Reference:** `references/conventions-review.md`
-**Also read:** `../code-writing/references/conventions.md`
-
-Check every changed file against the project's C# conventions:
-
-- Naming: PascalCase types, `_camelCase` private fields, `Async` suffix, `I` prefix on interfaces
-- File structure: file-scoped namespaces, one public type per file, `using` directive order
-- Type choices: `sealed` on concrete classes, `record` for DTOs, `required`/`init` where appropriate
-- Members: explicit access modifiers everywhere, guard clauses at method entry, `CancellationToken` threaded through
-- Async: no `.Result` / `.Wait()`, no `async void`, no `new HttpClient()`
-- Null safety: nullable enabled, `ArgumentNullException.ThrowIfNull`, no silent null suppression (`!`)
-- Logging: structured log templates, no interpolation in log calls, no secrets in logs
-- Anti-patterns table: `dynamic`, `Thread.Sleep`, swallowed exceptions, hardcoded secrets
-
-For each violation, record: **file**, **line**, **rule broken**, **corrected code**.
+Every doc has one job: help the reader do something or understand something.
+Write for that reader, not for completeness. If a section doesn't help them,
+cut it.
 
 ---
 
-## Pass 2 — Security audit
+## Before writing
 
-**Reference:** `references/security-review.md`
-**Also read:** `../auditing/references/owasp-dotnet.md`
+Ask (or infer from context):
 
-Scan every changed file for the OWASP Top 10 and .NET-specific vulnerabilities:
-
-- **Injection** — raw SQL, command injection, `Html.Raw`, LDAP filter construction
-- **Broken access control** — missing `[Authorize]`, IDOR (no ownership check on queries), privilege via header/body claims
-- **Cryptographic failures** — MD5/SHA1/DES, ECB mode, TLS bypass, plain-text passwords
-- **Insecure deserialization** — `BinaryFormatter`, `TypeNameHandling.All/Auto`, untyped `Deserialize`
-- **Secrets** — hardcoded connection strings, API keys, passwords, tokens
-- **Security misconfiguration** — `UseDeveloperExceptionPage` without env guard, `AllowAnyOrigin`, Swagger in prod
-- **Mass assignment** — entity bound directly from `[FromBody]`, no DTO mapping
-- **SSRF** — `HttpClient` called with user-supplied URL without allowlist
-
-For each finding, record: **severity** (Critical / High / Medium / Low / Info), **file**, **line**, **attack vector**, **fix**.
+1. **Who is the reader?** — Developer unfamiliar with the project? End user? New team member? The answer changes everything about vocabulary and assumed knowledge.
+2. **What is the doc's one job?** — Get started? Understand the architecture? Contribute? Reference an API?
+3. **What doc type is this?** — See the type guide in `references/doc-types.md`.
+4. **Is there existing content to work from?** — Code, comments, a rough draft, an old doc?
 
 ---
 
-## Pass 3 — Test coverage
+## Writing process
 
-**Reference:** `references/test-coverage-review.md`
-**Also read:** `../testing/SKILL.md`
+### 1. Open with the answer, not the preamble
 
-Verify that every meaningful change is covered by tests:
+The first sentence tells the reader what this thing is and what it does.
+No history, no motivation, no "welcome to". If they're reading, they already care.
 
-### Coverage requirements by change type
+```markdown
+<!-- WRONG — reader has to wait for the point -->
+# MyApp
 
-| Change type | Required test type | Minimum |
-|---|---|---|
-| New service method | Unit test (Moq) | Happy path + at least one error path |
-| New repository method | Integration test (real DB) | Happy path + edge case |
-| New API endpoint | Application test (HTTP) | 2xx happy path + auth failure (401/403) + validation failure (400/422) |
-| Domain rule / invariant | Unit test | Every branch of the rule |
-| Bug fix | Regression test that fails before the fix | One test that reproduces the bug |
-| Schema migration | Integration test verifying the schema | Up() produces expected columns/indexes; Down() reverts cleanly |
-| Security fix | Unit or application test | Verifies the vulnerability is closed |
+Welcome to MyApp! This project was created to solve the problem of...
 
-### Test quality checks
+<!-- CORRECT — immediate clarity -->
+# MyApp
 
-- AAA structure present in every test (labelled `// Arrange`, `// Act`, `// Assert`)
-- Naming convention: `MethodName_StateUnderTest_ExpectedBehavior`
-- One behavior per test — no multi-assert omnibus tests
-- FluentAssertions used — no bare `Assert.Equal` or `Assert.True`
-- Mocks verify interactions, not just return values, where the call itself is the behavior
-- No `Thread.Sleep` or `Task.Delay` in tests — use `FakeTimeProvider` or mock the dependency
-- No magic strings/numbers in test data — use named constants or builders
-
-### Running tests (record results in the report)
-
-```bash
-# Run all tests and collect results
-dotnet test --logger "trx;LogFileName=results.trx" --results-directory ./test-results
-
-# Run with coverage
-dotnet test --collect:"XPlat Code Coverage" --results-directory ./test-results
-
-# Show failed tests only
-dotnet test --verbosity minimal | grep -E "FAIL|Error|Exception"
-
-# Run a specific project
-dotnet test tests/MyApp.UnitTests
-dotnet test tests/MyApp.IntegrationTests
-dotnet test tests/MyApp.ApplicationTests
+MyApp syncs your local `.env` files across machines using encrypted cloud storage.
 ```
 
-For each missing test or quality violation, record: **what is untested**, **which test type is needed**, **example test name**.
+### 2. Structure around tasks, not features
+
+Readers come with a task in mind. Organise sections around what they want to do,
+not around how the software is built.
+
+```markdown
+<!-- WRONG — organised around the product -->
+## Configuration System
+## Plugin Architecture
+## Caching Layer
+
+<!-- CORRECT — organised around the reader's tasks -->
+## Get started in 5 minutes
+## Configure for your environment
+## Add your first plugin
+## Improve performance with caching
+```
+
+### 3. Use plain language
+
+Write as if explaining to a smart colleague who hasn't used this before.
+
+| Instead of | Write |
+|---|---|
+| "Instantiate the client" | "Create a client" |
+| "Invoke the method" | "Call the method" |
+| "Leverage the API" | "Use the API" |
+| "Terminate the process" | "Stop the process" |
+| "Populate the required fields" | "Fill in the required fields" |
+
+### 4. Show before you tell
+
+Every concept gets an example. Code examples are more valuable than paragraphs.
+Put the example first, then explain it.
+
+```markdown
+<!-- WRONG — explain then show -->
+The `connect()` method establishes a connection to the server using
+the credentials provided during initialisation. It returns a Promise
+that resolves when the connection is established.
+
+<!-- CORRECT — show then explain -->
+```js
+const client = new Client({ host: 'localhost', port: 5432 });
+await client.connect();
+```
+
+`connect()` opens the connection using the credentials from the constructor.
+It's async — `await` it before running queries.
+```
+
+### 5. Format to aid scanning, not to look thorough
+
+Readers scan before they read. Use formatting to support that — but only where it genuinely helps.
+
+**Use headings** to mark major sections (H2) and sub-sections (H3). Not every paragraph.
+
+**Use bullet lists** for genuinely list-like things: requirements, options, steps with no order.
+Do not use bullets to break up what should be prose.
+
+**Use numbered lists** for steps that must happen in order.
+
+**Use code blocks** for all code, commands, file paths, and config values — even one-liners.
+
+**Use bold** for terms being defined and for the most important word in a warning.
+Do not bold random phrases for emphasis.
+
+**Use tables** for comparing options or showing parameter reference. Not for narrative content.
+
+**Use blockquotes** (`>`) for callouts: tips, warnings, important notes. Label them.
+
+```markdown
+> **Note:** This only applies when running in production mode.
+
+> **Warning:** This command deletes data permanently. There is no undo.
+```
 
 ---
 
-## Pass 4 — Final verdict
+## Structure templates
 
-**Reference:** `references/verdict-rubric.md`
-
-Aggregate all findings from Passes 1–3 into the structured report below.
-Assign an overall verdict and list all action items in priority order.
+Read `references/doc-types.md` for complete templates for:
+- README (project root)
+- Getting started / quickstart guide
+- API reference
+- Configuration reference
+- Architecture / design doc
+- Contributing guide
+- Changelog
 
 ---
 
 ## Output format
 
-ALWAYS produce the full review using this exact structure.
+Always produce the documentation as a complete, ready-to-use `.md` file.
+
+After the file, add a short reviewer note (2–4 bullet points) covering:
+- What was assumed about the reader
+- Any section where real content is needed (marked `[TODO: ...]` in the file)
+- One suggestion for what to add next
 
 ---
 
-### PR Review: [PR title or branch name]
+## Quality checklist
 
-**Reviewed:** [date]
-**Files changed:** N
-**Passes run:** Conventions · Security · Test Coverage
+Before finishing, verify:
 
----
-
-#### Overall verdict
-
-| Verdict | Meaning |
-|---|---|
-| ✅ **Approve** | No blockers. Minor suggestions noted below. |
-| ⚠️ **Approve with comments** | No security or test blockers. Convention issues that must be fixed before merge. |
-| 🔁 **Request changes** | One or more must-fix items. Cannot merge until resolved. |
-| 🚫 **Block** | Critical security finding or zero test coverage on new logic. Needs redesign. |
-
-**Verdict:** [one of the above]
-**Reason:** [one sentence explaining the verdict]
-
----
-
-#### Finding summary
-
-| Pass | Severity | Count |
-|---|---|---|
-| Conventions | Must Fix / Should Fix / Suggestion | N / N / N |
-| Security | Critical / High / Medium / Low / Info | N / N / N / N / N |
-| Test Coverage | Missing / Quality | N / N |
-
----
-
-#### Pass 1 — Conventions findings
-
-For each finding:
-
-**[C-N] [Rule name]**
-**Severity:** Must Fix / Should Fix / Suggestion
-**Location:** `FileName.cs` line N
-**Issue:** What violates the convention and why it matters.
-```csharp
-// before
-// after
-```
-
-*(List all findings, or write "✅ No convention violations found." if clean)*
-
----
-
-#### Pass 2 — Security findings
-
-For each finding:
-
-**[S-N] [Short title]**
-**Severity:** Critical / High / Medium / Low / Info
-**Location:** `FileName.cs` line N (method name)
-**Attack vector:** How an attacker exploits this.
-**Fix:**
-```csharp
-// before
-// after
-```
-**Reference:** CWE-XXX
-
-*(List all findings, or write "✅ No security issues found." if clean)*
-
----
-
-#### Pass 3 — Test coverage findings
-
-For each missing or poor-quality test:
-
-**[T-N] [What is missing]**
-**Type:** Missing test / Quality issue
-**Gap:** What scenario or behavior is not covered.
-**Required test name:** `MethodName_StateUnderTest_ExpectedBehavior`
-**Test type needed:** Unit / Integration / Application
-
-*(List all findings, or write "✅ Test coverage is adequate." if clean)*
-
----
-
-#### Test run results
-
-```
-Passed:  N
-Failed:  N
-Skipped: N
-
-[List any failed tests with their error messages]
-```
-
-*(Write "⚠️ Tests were not run — run `dotnet test` and paste results to complete this review." if results were not provided)*
-
----
-
-#### Action items (priority order)
-
-Must fix before merge:
-- [ ] [S-1] [Short description] — `FileName.cs:N`
-- [ ] [T-1] [Short description]
-
-Should fix before merge:
-- [ ] [C-2] [Short description] — `FileName.cs:N`
-
-Suggestions (non-blocking):
-- [ ] [C-5] [Short description]
+- [ ] First sentence says what the thing is and does — no warm-up
+- [ ] Every section heading is a task or question, not a noun
+- [ ] Every concept has a code example
+- [ ] No jargon that the target reader wouldn't know
+- [ ] No bullet list with more than 7 items (split or use a table instead)
+- [ ] No heading followed immediately by another heading (add a sentence of context)
+- [ ] All code blocks have a language tag (` ```js `, ` ```bash `, ` ```yaml `)
+- [ ] File paths and commands are in backtick code spans
+- [ ] Links are descriptive — not "click here" or bare URLs
 
 ---
 
 ## Reference files
 
-| File | Pass |
+| File | When to read |
 |---|---|
-| `references/conventions-review.md` | Pass 1 — detailed convention checklist |
-| `references/security-review.md` | Pass 2 — security scan checklist |
-| `references/test-coverage-review.md` | Pass 3 — coverage requirements and quality checks |
-| `references/verdict-rubric.md` | Pass 4 — scoring and verdict rules |
+| `references/doc-types.md` | Full templates for every documentation type |
+| `references/plain-language.md` | Plain language rules and before/after examples |
