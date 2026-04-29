@@ -1,4 +1,4 @@
-namespace Integration.Infrastructure;
+namespace Application.Infrastructure;
 
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
 /// Test-only controller that triggers specific domain exceptions to exercise the
-/// exception handler pipeline during integration testing. Not present in production.
+/// exception handler pipeline during application testing. Not present in production.
 /// </summary>
 [ApiController]
 [Route("test")]

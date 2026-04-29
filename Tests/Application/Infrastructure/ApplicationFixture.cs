@@ -3,6 +3,7 @@ namespace Application.Infrastructure;
 using Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// Shared fixture that boots the full application once per test collection.
@@ -37,6 +38,14 @@ public sealed class ApplicationFixture : IAsyncLifetime
             .WithWebHostBuilder(builder =>
             {
                 builder.UseEnvironment("Development");
+
+                builder.ConfigureServices(services =>
+                {
+                    // Register this assembly as an application part so ASP.NET Core
+                    // discovers TestController alongside the production controllers.
+                    services.AddMvc()
+                        .AddApplicationPart(typeof(ApplicationFixture).Assembly);
+                });
             });
 
         Client = _factory.CreateClient(new WebApplicationFactoryClientOptions

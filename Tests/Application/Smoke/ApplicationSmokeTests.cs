@@ -13,16 +13,20 @@ public sealed class ApplicationSmokeTests(ApplicationFixture fixture) : Applicat
     [Fact]
     public async Task GET_OpenApi_WhenEnvironmentIsDevelopment_Returns200()
     {
+        // Act
         var response = await Client.GetAsync("/openapi/v1.json");
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
     public async Task GET_UnknownRoute_WhenNoEndpointMatched_Returns404()
     {
+        // Act
         var response = await Client.GetAsync("/api/does-not-exist");
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
