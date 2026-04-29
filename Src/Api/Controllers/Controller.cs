@@ -1,8 +1,11 @@
+namespace Src.Controllers;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Src.Controllers;
-
+/// <summary>
+/// Base controller for API endpoints.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class Controller : ControllerBase
