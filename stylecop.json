@@ -2,19 +2,17 @@
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCopAnalyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "Your Company",
-      "copyrightText": "Copyright (c) {year} Your Company. All rights reserved.",
-      "variables": {
-        "year": "2026"
-      },
+      "fileMustHaveHeader": false,
       "documentInterfaces": true,
       "documentExposedElements": true,
       "documentInternalElements": false,
       "documentPrivateElements": false,
-      "documentPrivateMethods": false
+      "documentPrivateMethods": false,
+      "documentExposedInternalElements": true
     },
     "maintainabilityRules": {
-      "topLevelTypes": 1
+      "topLevelTypes": 1,
+      "accessModifierRequiredForInterfaceMembers": true
     },
     "layoutRules": {
       "newlineEndOfFile": "require",
@@ -22,10 +20,15 @@
     },
     "orderingRules": {
       "usingDirectivesPlacement": "outsideNamespace",
-      "useCombinedDirectives": true
+      "useCombinedDirectives": true,
+      "systemUsingDirectivesFirst": true,
+      "blankLinesBetweenUsingGroups": "require"
     },
     "namingRules": {
       "allowCommonHungarianPrefixes": false
+    },
+    "readabilityRules": {
+      "allowBuiltInTypeNames": false
     }
   }
 }
