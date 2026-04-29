@@ -13,10 +13,16 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="StyleCop.Analyzers" />
+    <PackageReference Include="Moq" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Api\Api.csproj" />
+    <ProjectReference Include="..\..\Src\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

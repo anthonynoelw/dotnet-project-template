@@ -6,7 +6,7 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 ## Must Have
 
-- [ ] **Global Exception Handling & Problem Details** — Add a middleware or `IExceptionHandler` that catches unhandled exceptions and returns RFC 9457 `ProblemDetails`. Without this, stack traces leak to API consumers.
+- [x] **Global Exception Handling & Problem Details** — Add a middleware or `IExceptionHandler` that catches unhandled exceptions and returns RFC 9457 `ProblemDetails`. Without this, stack traces leak to API consumers.
 
 - [ ] **Health Checks** — Add `/health` and `/health/ready` endpoints via `AspNetCore.HealthChecks.*`. Required by every container orchestrator (Kubernetes, ECS, Azure Container Apps). Docker Compose cannot manage service lifecycle without them.
 
