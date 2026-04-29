@@ -248,6 +248,7 @@ dotnet_diagnostic.SA1600.severity = none
 dotnet_diagnostic.SA1601.severity = none
 dotnet_diagnostic.SA1202.severity = none
 dotnet_diagnostic.SA1010.severity = none
+dotnet_diagnostic.CA1707.severity = none
 
 #### Data / Config Files ####
 

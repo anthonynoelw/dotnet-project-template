@@ -12,7 +12,7 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 - [ ] **CI/CD Pipeline (GitHub Actions)** — No workflows exist. Add `.github/workflows/ci.yml` with `dotnet build`, `dotnet test`, and `dotnet publish` steps triggered on pull requests. Nothing can be validated without this.
 
-- [ ] **Integration & Application Test Projects** — Only a unit test project exists. Add:
+- [x] **Integration & Application Test Projects** — Only a unit test project exists. Add:
   - `Tests/Integration/` — WebApplicationFactory-based HTTP-level tests
   - `Tests/Application/` — real in-memory app + real database tests
   
