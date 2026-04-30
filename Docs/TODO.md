@@ -22,6 +22,11 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 - [ ] **Configuration Validation (Options Pattern)** — Bind all settings via `IOptions<T>` with `ValidateDataAnnotations()` and `ValidateOnStart()`. Misconfigured deployments must fail at startup, not at runtime.
 
+- [ ] **API Versioning** — Add `Asp.Versioning.Http` so routes start as `/api/v1/`. Retrofitting versioning into a live API is painful — it must be established from day one.
+
+- [ ] **Conventional Commits Changelog Generation** — `commitlint` is already wired. Add `standard-version` or `release-please` to auto-generate `CHANGELOG.md` from commit history.
+
+- [ ] **`CODEOWNERS` File** — Add `.github/CODEOWNERS` as a placeholder. Expected in team repositories and commonly overlooked.
 ---
 
 ## Should Have
@@ -32,13 +37,11 @@ Patterns and infrastructure that any real feature will immediately need.
 
 - [ ] **CQRS via MediatR** — The Application layer is empty. Wire up MediatR with `IRequest`/`IRequestHandler` base types, a pipeline behavior, and one example command and one example query.
 
-- [ ] **FluentValidation + MediatR Pipeline Behavior** — Add `AbstractValidator<T>` integrated as a MediatR pipeline behavior so validation runs automatically for every command and query.
+- [ ] **FluentValidation + MediatR Pipeline Behavior** — Add `AbstractValidator<T>` integrated as a MediaR pipeline behavior so validation runs automatically for every command and query.
 
 - [ ] **Repository Pattern Interfaces** — Define `IRepository<T>` and `IUnitOfWork` in Domain; implement them in Infrastructure. Without these, Infrastructure has no contract to fulfil.
 
 - [ ] **OpenTelemetry (Traces + Metrics)** — Add `OpenTelemetry.Extensions.Hosting` with OTLP exporter configured in both Api and Agent. Required for distributed tracing and production observability.
-
-- [ ] **API Versioning** — Add `Asp.Versioning.Http` so routes start as `/api/v1/`. Retrofitting versioning into a live API is painful — it must be established from day one.
 
 - [ ] **Scalar / Swagger UI** — `Microsoft.AspNetCore.OpenApi` is referenced but only `MapOpenApi()` is called. Add Scalar or Swashbuckle so developers can explore the API immediately on first run.
 
@@ -61,9 +64,4 @@ Patterns and infrastructure that any real feature will immediately need.
 - [ ] **Outbox Pattern Stub** — If the Agent/Worker project is for event processing, add an outbox table and a hosted service that polls it. Prevents message loss on process restart.
 
 - [ ] **`docker-compose.override.yml`** — Add a local-development override with hot-reload volumes, debug ports, and a local database container. Keeps the base `docker-compose.yml` clean for production.
-
-- [ ] **Conventional Commits Changelog Generation** — `commitlint` is already wired. Add `standard-version` or `release-please` to auto-generate `CHANGELOG.md` from commit history.
-
-- [ ] **`CODEOWNERS` File** — Add `.github/CODEOWNERS` as a placeholder. Expected in team repositories and commonly overlooked.
-
 ---
