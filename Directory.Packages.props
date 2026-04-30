@@ -12,6 +12,10 @@
     <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0" />
     
+    <!-- API Versioning -->
+    <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+
     <!-- Code Analysis -->
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
 

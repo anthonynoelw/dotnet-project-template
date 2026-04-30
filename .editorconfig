@@ -142,6 +142,9 @@ dotnet_diagnostic.SA1009.severity = none
 # SA1310: Underscores are intentional in SCREAMING_SNAKE_CASE constants
 dotnet_diagnostic.SA1310.severity = none
 
+# SA1313: Record primary constructor parameters define properties and use PascalCase by convention
+dotnet_diagnostic.SA1313.severity = none
+
 #### Naming Conventions ####
 
 # Styles

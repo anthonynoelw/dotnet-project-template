@@ -2,6 +2,8 @@ namespace Application.Infrastructure;
 
 using System.Collections.Generic;
 
+using Asp.Versioning;
+
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 /// exception handler pipeline during application testing. Not present in production.
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("test")]
 public sealed class TestController : ControllerBase
 {
