@@ -9,6 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Settings.Configuration" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Formatting.Compact" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="StyleCop.Analyzers" />
   </ItemGroup>
 </Project>
