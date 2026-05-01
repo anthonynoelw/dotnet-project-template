@@ -7,7 +7,8 @@ namespace Application.Infrastructure;
 [Collection("Application")]
 public abstract class ApplicationTestBase
 {
-    /// <summary>Initializes a new instance of <see cref="ApplicationTestBase"/>.</summary>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ApplicationTestBase"/> class.Initializes a new instance of <see cref="ApplicationTestBase"/>.</summary>
     protected ApplicationTestBase(ApplicationFixture fixture)
     {
         Client = fixture.Client;

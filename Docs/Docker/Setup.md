@@ -16,16 +16,16 @@ This directory contains Docker configuration for building and running your .NET 
 # Build with default project name
 docker build \
   --build-arg PROJECT_NAME=YourProject \
-  --build-arg PROJECT_PATH=src/YourProject \
+  --build-arg PROJECT_PATH=Src/YourProject \
   -t yourproject-api:latest \
-  -f docker/Dockerfile .
+  -f Docker/Dockerfile .
 ```
 
 ### Or with docker-compose:
 
 ```bash
 # Uses args from docker-compose.yml
-docker-compose -f docker/docker-compose.yml up --build
+docker-compose -f Docker/docker-compose.yml up --build
 ```
 
 ## Building Multiple Projects
@@ -37,19 +37,19 @@ services:
   api:
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Docker/Dockerfile
       args:
         PROJECT_NAME: YourProject.Api
-        PROJECT_PATH: src/YourProject.Api
+        PROJECT_PATH: Src/YourProject.Api
         DOTNET_VERSION: "10.0"
 
   worker:
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Docker/Dockerfile
       args:
         PROJECT_NAME: YourProject.Worker
-        PROJECT_PATH: src/YourProject.Worker
+        PROJECT_PATH: Src/YourProject.Worker
         DOTNET_VERSION: "10.0"
 ```
 
@@ -57,13 +57,13 @@ Then:
 
 ```bash
 # Build all services
-docker-compose -f docker/docker-compose.yml build
+docker-compose -f Docker/docker-compose.yml build
 
 # Run all services
-docker-compose -f docker/docker-compose.yml up
+docker-compose -f Docker/docker-compose.yml up
 
 # Run specific service
-docker-compose -f docker/docker-compose.yml up api
+docker-compose -f Docker/docker-compose.yml up api
 ```
 
 ## Build Arguments
@@ -81,7 +81,7 @@ The Dockerfile assumes the following layout:
 ```
 repository-root/
 ├── .sln                          # Solution file
-├── src/
+├── Src/
 │   ├── YourProject/
 │   │   ├── YourProject.csproj
 │   │   ├── Program.cs
@@ -89,9 +89,9 @@ repository-root/
 │   └── AnotherProject/
 │       ├── AnotherProject.csproj
 │       └── ...
-├── tests/                        # (Optional) Test projects
+├── Tests/                        # (Optional) Test projects
 │   └── YourProject.Tests/
-└── docker/
+└── Docker/
     ├── Dockerfile
     ├── .dockerignore
     └── docker-compose.yml
@@ -107,7 +107,7 @@ Uncomment the `command` line in `docker-compose.yml` to enable `dotnet watch`:
 ```yaml
 services:
   api:
-    command: dotnet watch run --project src/YourProject/YourProject.csproj
+    command: dotnet watch run --project Src/YourProject/YourProject.csproj
 ```
 
 ### Port Mapping

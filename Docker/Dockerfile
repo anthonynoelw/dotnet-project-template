@@ -1,16 +1,16 @@
 # Build args
 ARG PROJECT_NAME=YourProject
-ARG PROJECT_PATH=src/${PROJECT_NAME}
+ARG PROJECT_PATH=Src/${PROJECT_NAME}
 ARG DOTNET_VERSION=10.0
 
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
-WORKDIR /src
+WORKDIR /Src
 
 # Copy solution file and project files
-COPY ["*.sln", "."]
-COPY ["src/", "src/"]
-COPY ["tests/", "tests/"]
+COPY ["*.slnx", "."]
+COPY ["Src/", "Src/"]
+COPY ["Tests/", "Tests/"]
 
 # Restore dependencies
 ARG PROJECT_NAME

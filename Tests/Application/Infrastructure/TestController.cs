@@ -17,14 +17,17 @@ using Microsoft.AspNetCore.Mvc;
 public sealed class TestController : ControllerBase
 {
     /// <summary>Triggers a <see cref="NotFoundException"/>.</summary>
+    /// <returns></returns>
     [HttpGet("not-found")]
     public IActionResult TriggerNotFound() => throw new NotFoundException("Test resource not found.");
 
     /// <summary>Triggers a <see cref="ConflictException"/>.</summary>
+    /// <returns></returns>
     [HttpGet("conflict")]
     public IActionResult TriggerConflict() => throw new ConflictException("Duplicate test resource.");
 
     /// <summary>Triggers a <see cref="ValidationException"/> with a single field error.</summary>
+    /// <returns></returns>
     [HttpGet("validation")]
     public IActionResult TriggerValidation() =>
         throw new ValidationException("Validation failed.", new Dictionary<string, string[]>
@@ -33,6 +36,7 @@ public sealed class TestController : ControllerBase
         });
 
     /// <summary>Triggers an unhandled <see cref="InvalidOperationException"/>.</summary>
+    /// <returns></returns>
     [HttpGet("error")]
     public IActionResult TriggerError() => throw new InvalidOperationException("Unhandled test error.");
 }

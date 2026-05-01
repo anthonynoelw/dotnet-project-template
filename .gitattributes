@@ -210,17 +210,18 @@ tsconfig.json text eol=lf
 # ============================================================================
 
 # Ensure newline at end of file for text files
-*.cs eof=lf
-*.json eof=lf
-*.yaml eof=lf
-*.yml eof=lf
-*.xml eof=lf
-*.md eof=lf
-*.sh eof=lf
-*.html eof=lf
-*.css eof=lf
-*.js eof=lf
-*.ts eof=lf
+
+*.cs text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.xml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
 
 # ============================================================================
 # Normalize Whitespace (optional)
