@@ -8,6 +8,7 @@
   "devDependencies": {
     "husky": "^9.0.0",
     "commitlint": "^19.0.0",
-    "@commitlint/config-conventional": "^19.0.0"
+    "@commitlint/config-conventional": "^19.0.0",
+    "release-please": "^16.0.0"
   }
 }

@@ -24,9 +24,9 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 - [x] **API Versioning** — Add `Asp.Versioning.Http` so routes start as `/api/v1/`. Retrofitting versioning into a live API is painful — it must be established from day one.
 
-- [ ] **Conventional Commits Changelog Generation** — `commitlint` is already wired. Add `standard-version` or `release-please` to auto-generate `CHANGELOG.md` from commit history.
+- [x] **Conventional Commits Changelog Generation** — `commitlint` is already wired. Added `release-please` to auto-generate `CHANGELOG.md` from commit history via GitHub Actions.
 
-- [ ] **`CODEOWNERS` File** — Add `.github/CODEOWNERS` as a placeholder. Expected in team repositories and commonly overlooked.
+- [x] **`CODEOWNERS` File** — Add `.github/CODEOWNERS` as a placeholder. Expected in team repositories and commonly overlooked.
 ---
 
 ## Should Have
