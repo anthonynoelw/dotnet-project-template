@@ -58,6 +58,26 @@ All domain exceptions in `Src/Domain/Exceptions/` map to RFC 9457 ProblemDetails
 | `ConflictException` | 409 |
 | Unhandled | 500 (detail redacted outside Development) |
 
+### Health check endpoints
+
+Two unversioned infrastructure endpoints (not under `/api/v{version}/`):
+
+| Endpoint | Probe type | Behavior |
+|---|---|---|
+| `GET /health` | Liveness | Always `Healthy` while the process is running — no dependency checks (`Predicate = _ => false`) |
+| `GET /health/ready` | Readiness | Runs only checks tagged `"ready"`; returns `Healthy` with empty entries until dependencies are wired |
+
+Both return a JSON body via `UIResponseWriter.WriteHealthCheckUIResponse` (`AspNetCore.HealthChecks.UI.Client`):
+```json
+{ "status": "Healthy", "totalDuration": "...", "entries": {} }
+```
+
+Future readiness checks (EF Core, Redis, etc.) attach in `ServiceExtensions.AddApiServices()`:
+```csharp
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<AppDbContext>(tags: ["ready"]);
+```
+
 ### API versioning
 
 URL-segment versioning (`/api/v{version}/[controller]`). New API versions get their own OpenAPI document via `ApiVersionDocumentTransformer`. Base controller in `Src/Api/Controllers/Controller.cs` carries the route template; all controllers inherit from it.
@@ -69,9 +89,12 @@ Both Api and Agent use **Serilog** configured from `appsettings.json`. Enriched 
 ### Service registration pattern
 
 Extension methods on `IHostApplicationBuilder` keep `Program.cs` clean:
-- `AddApiServices()` — controllers, versioning, OpenAPI, ProblemDetails, global exception handler
+- `AddApiServices()` — controllers, versioning, OpenAPI, ProblemDetails, global exception handler, health checks
 - `AddSerilogLogging()` — Serilog from config
 - `AddAgentServices()` — registers `Worker` as `IHostedService`
+
+The middleware pipeline is configured via an extension method on `WebApplication`:
+- `UseApiPipeline()` — Serilog request logging, exception handler, OpenAPI (Development), HTTPS redirect, authorization, controllers, health check endpoints
 
 ## Tests
 
@@ -106,7 +129,7 @@ Key items not yet implemented that new features will likely need:
 - EF Core DbContext + migrations
 - MediatR (CQRS) + FluentValidation pipeline
 - Repository pattern (`IRepository<T>`, `IUnitOfWork`)
-- Health check endpoints (`/health`, `/health/ready`)
+- ~~Health check endpoints (`/health`, `/health/ready`)~~ ✓ implemented
 - CORS configuration
 - OpenTelemetry traces + metrics
 - Scalar/Swagger UI (OpenAPI docs already generated)

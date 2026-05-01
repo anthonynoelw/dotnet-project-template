@@ -8,7 +8,7 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 - [x] **Global Exception Handling & Problem Details** — Add a middleware or `IExceptionHandler` that catches unhandled exceptions and returns RFC 9457 `ProblemDetails`. Without this, stack traces leak to API consumers.
 
-- [ ] **Health Checks** — Add `/health` and `/health/ready` endpoints via `AspNetCore.HealthChecks.*`. Required by every container orchestrator (Kubernetes, ECS, Azure Container Apps). Docker Compose cannot manage service lifecycle without them.
+- [x] **Health Checks** — Add `/health` and `/health/ready` endpoints via `AspNetCore.HealthChecks.*`. Required by every container orchestrator (Kubernetes, ECS, Azure Container Apps). Docker Compose cannot manage service lifecycle without them.
 
 - [x] **CI/CD Pipeline (GitHub Actions)** — Workflow exists at `.github/workflows/ci.yml` with `dotnet build`, `dotnet test`, and `dotnet publish` steps triggered on pull requests and pushes to main/dev.
 

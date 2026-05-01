@@ -12,7 +12,7 @@ internal static class ServiceExtensions
 {
     /// <summary>
     /// Registers all API services: controllers, URL-segment API versioning, version-aware
-    /// OpenAPI documents, RFC 9457 problem details, and the global exception handler.
+    /// OpenAPI documents, RFC 9457 problem details, the global exception handler, and health checks.
     /// </summary>
     /// <param name="builder">The host application builder.</param>
     /// <returns>The same <paramref name="builder"/> instance for chaining.</returns>
@@ -39,12 +39,12 @@ internal static class ServiceExtensions
         // (/openapi/{documentName}.json) serves each document at its versioned URL.
         // When adding a new version, add a corresponding AddOpenApi("v2", ...) call here.
         builder.Services.AddOpenApi("v1", options =>
-        {
-            options.AddDocumentTransformer<ApiVersionDocumentTransformer>();
-        });
+            options.AddDocumentTransformer<ApiVersionDocumentTransformer>());
 
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+        builder.Services.AddHealthChecks();
 
         return builder;
     }

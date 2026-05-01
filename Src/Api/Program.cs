@@ -30,28 +30,7 @@ public partial class Program
 
             WebApplication app = builder.Build();
 
-            // Must precede UseExceptionHandler: wraps the full pipeline so Serilog
-            // captures the final status code for exception-mapped 5xx responses.
-            app.UseSerilogRequestLogging(options =>
-            {
-                options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
-                {
-                    diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
-                    diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
-                    diagnosticContext.Set("UserAgent", httpContext.Request.Headers.UserAgent.ToString());
-                };
-            });
-
-            app.UseExceptionHandler();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
+            app.UseApiPipeline();
 
             app.Run();
         }
