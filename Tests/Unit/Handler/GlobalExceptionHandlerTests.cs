@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Api.Exceptions;
 using Domain.Exceptions;
+using FluentAssertions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,7 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal(StatusCodes.Status404NotFound, context.Response.StatusCode);
+        context.Response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
     }
 
     [Fact]
@@ -57,7 +58,7 @@ public sealed class GlobalExceptionHandlerTests
 
         bool handled = await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.True(handled);
+        handled.Should().BeTrue();
     }
 
     [Fact]
@@ -73,11 +74,11 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.NotNull(capturedDetails);
-        Assert.Equal(StatusCodes.Status404NotFound, capturedDetails.Status);
-        Assert.Equal("Not Found", capturedDetails.Title);
-        Assert.Equal("Order 42 not found.", capturedDetails.Detail);
-        Assert.Equal("/api/orders/42", capturedDetails.Instance);
+        capturedDetails.Should().NotBeNull();
+        capturedDetails!.Status.Should().Be(StatusCodes.Status404NotFound);
+        capturedDetails.Title.Should().Be("Not Found");
+        capturedDetails.Detail.Should().Be("Order 42 not found.");
+        capturedDetails.Instance.Should().Be("/api/orders/42");
     }
 
     [Fact]
@@ -88,7 +89,7 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal(StatusCodes.Status409Conflict, context.Response.StatusCode);
+        context.Response.StatusCode.Should().Be(StatusCodes.Status409Conflict);
     }
 
     [Fact]
@@ -104,8 +105,8 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal("Conflict", capturedDetails!.Title);
-        Assert.Equal("Duplicate email address.", capturedDetails.Detail);
+        capturedDetails!.Title.Should().Be("Conflict");
+        capturedDetails.Detail.Should().Be("Duplicate email address.");
     }
 
     [Fact]
@@ -120,7 +121,7 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal(StatusCodes.Status422UnprocessableEntity, context.Response.StatusCode);
+        context.Response.StatusCode.Should().Be(StatusCodes.Status422UnprocessableEntity);
     }
 
     [Fact]
@@ -141,10 +142,10 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        var validationDetails = Assert.IsType<ValidationProblemDetails>(capturedDetails);
-        Assert.Equal(2, validationDetails.Errors.Count);
-        Assert.Contains("Email", validationDetails.Errors.Keys);
-        Assert.Contains("Price", validationDetails.Errors.Keys);
+        var validationDetails = capturedDetails.Should().BeOfType<ValidationProblemDetails>().Subject;
+        validationDetails.Errors.Should().HaveCount(2);
+        validationDetails.Errors.Keys.Should().Contain("Email");
+        validationDetails.Errors.Keys.Should().Contain("Price");
     }
 
     [Fact]
@@ -155,7 +156,7 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal(StatusCodes.Status500InternalServerError, context.Response.StatusCode);
+        context.Response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
     }
 
     [Fact]
@@ -172,9 +173,9 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.NotNull(capturedDetails);
-        Assert.DoesNotContain("Sensitive internal message.", capturedDetails.Detail ?? string.Empty);
-        Assert.Equal("An unexpected error occurred. Please try again later.", capturedDetails.Detail);
+        capturedDetails.Should().NotBeNull();
+        (capturedDetails?.Detail ?? string.Empty).Should().NotContain("Sensitive internal message.");
+        capturedDetails!.Detail.Should().Be("An unexpected error occurred. Please try again later.");
     }
 
     [Fact]
@@ -191,7 +192,7 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal("Sensitive internal message.", capturedDetails!.Detail);
+        capturedDetails!.Detail.Should().Be("Sensitive internal message.");
     }
 
     [Fact]
@@ -210,7 +211,7 @@ public sealed class GlobalExceptionHandlerTests
         foreach (var exception in exceptions)
         {
             bool handled = await _handler.TryHandleAsync(context, exception, CancellationToken.None);
-            Assert.True(handled, $"Handler returned false for {exception.GetType().Name}");
+            handled.Should().BeTrue($"Handler returned false for {exception.GetType().Name}");
         }
     }
 
@@ -228,6 +229,6 @@ public sealed class GlobalExceptionHandlerTests
 
         await _handler.TryHandleAsync(context, exception, CancellationToken.None);
 
-        Assert.Equal("Order 99 not found.", capturedDetails!.Detail);
+        capturedDetails!.Detail.Should().Be("Order 99 not found.");
     }
 }
