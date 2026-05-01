@@ -20,7 +20,7 @@ Improvements prioritised by impact. Complete **Must Have** items before using th
 
 - [x] **Structured Logging (Serilog)** — Default `Microsoft.Extensions.Logging` is insufficient for production. Wire up Serilog with structured output, configurable log levels, and console/file sinks in both Api and Agent.
 
-- [ ] **Configuration Validation (Options Pattern)** — Bind all settings via `IOptions<T>` with `ValidateDataAnnotations()` and `ValidateOnStart()`. Misconfigured deployments must fail at startup, not at runtime.
+- [x] **Configuration Validation (Options Pattern)** — Bind all settings via `IOptions<T>` with `ValidateDataAnnotations()` and `ValidateOnStart()`. Misconfigured deployments must fail at startup, not at runtime.
 
 - [x] **API Versioning** — Add `Asp.Versioning.Http` so routes start as `/api/v1/`. Retrofitting versioning into a live API is painful — it must be established from day one.
 

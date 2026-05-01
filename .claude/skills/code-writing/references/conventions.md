@@ -692,6 +692,47 @@ YourSolution/
 └── Directory.Build.props             # Shared MSBuild properties (Nullable, TreatWarningsAsErrors, etc.)
 ```
 
+### Configuration / Options pattern
+
+Settings classes live in `Src/<Project>/Settings/` and are bound via `IOptions<T>`:
+
+```csharp
+// Src/Api/Settings/ApiSettings.cs
+namespace Api.Settings;
+
+using System.ComponentModel.DataAnnotations;
+
+public sealed class ApiSettings
+{
+    [Required]
+    public required string Name { get; init; }
+}
+```
+
+Wire in `ServiceExtensions`:
+
+```csharp
+// Src/Api/Extensions/ServiceExtensions.cs
+builder.Services
+    .AddOptions<ApiSettings>()
+    .BindConfiguration(WellKnown.ConfigSections.Api)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+```
+
+**Important:** All configuration section name constants go in `Domain/WellKnown.ConfigSections`, not inside the settings class:
+
+```csharp
+// Src/Domain/WellKnown.cs
+public static class ConfigSections
+{
+    public const string Api = "Api";
+    public const string Agent = "Agent";
+}
+```
+
+This centralizes all magic strings and ensures deployment failures happen at startup (when `ValidateOnStart()` is called) rather than at first use.
+
 ### Directory.Build.props (shared across all projects)
 
 ```xml

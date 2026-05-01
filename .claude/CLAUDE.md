@@ -82,6 +82,23 @@ builder.Services.AddHealthChecks()
 
 URL-segment versioning (`/api/v{version}/[controller]`). New API versions get their own OpenAPI document via `ApiVersionDocumentTransformer`. Base controller in `Src/Api/Controllers/Controller.cs` carries the route template; all controllers inherit from it.
 
+### Configuration Validation
+
+All application settings are bound via `IOptions<T>` with `ValidateDataAnnotations()` and `ValidateOnStart()`:
+
+```csharp
+// In ServiceExtensions
+builder.Services
+    .AddOptions<ApiSettings>()
+    .BindConfiguration(WellKnown.ConfigSections.Api)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+```
+
+Settings classes live in `Src/<Project>/Settings/` and use `[Required]`, `[Range]`, and other `System.ComponentModel.DataAnnotations` attributes to declare validation rules. The `IOptions<T>` instance is available to any service or controller that requests it via constructor injection.
+
+**Important:** All configuration section name constants (`"Api"`, `"Agent"`) are centralized in `Domain/WellKnown.ConfigSections` to avoid magic strings. Do not define `SectionName` constants inside settings classes.
+
 ### Logging
 
 Both Api and Agent use **Serilog** configured from `appsettings.json`. Enriched with machine name, environment name, and HTTP request context. Do not use `ILogger` from Microsoft.Extensions.Logging directly — wire through Serilog enrichment.

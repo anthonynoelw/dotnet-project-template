@@ -4,6 +4,19 @@ namespace Domain;
 public static class WellKnown
 {
     /// <summary>
+    /// Configuration section names for options binding.
+    /// Use with <c>AddOptions&lt;T&gt;().BindConfiguration(ConfigSections.X).ValidateDataAnnotations().ValidateOnStart()</c>.
+    /// </summary>
+    public static class ConfigSections
+    {
+        /// <summary>The "Api" configuration section (Api project settings).</summary>
+        public const string Api = "Api";
+
+        /// <summary>The "Agent" configuration section (Agent project settings).</summary>
+        public const string Agent = "Agent";
+    }
+
+    /// <summary>
     /// Tag constants used to categorise health checks by probe type.
     /// Attach these when registering infrastructure checks:
     /// <code>

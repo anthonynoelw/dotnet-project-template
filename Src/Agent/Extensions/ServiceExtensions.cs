@@ -1,6 +1,10 @@
 namespace Agent.Extensions;
 
+using Microsoft.Extensions.Options;
+
 using Agent;
+using Agent.Settings;
+using Domain;
 
 /// <summary>
 /// Extension methods for registering agent services on <see cref="IHostApplicationBuilder"/>.
@@ -15,6 +19,10 @@ internal static class ServiceExtensions
     internal static IHostApplicationBuilder AddAgentServices(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHostedService<Worker>();
+
+        builder.Services
+            .AddOptions<AgentSettings>()
+            .BindConfiguration(WellKnown.ConfigSections.Agent);
 
         return builder;
     }

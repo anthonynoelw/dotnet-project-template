@@ -4,6 +4,8 @@ using Asp.Versioning;
 
 using Api.Exceptions;
 using Api.OpenApi;
+using Api.Settings;
+using Domain;
 
 /// <summary>
 /// Extension methods for registering application services on <see cref="IHostApplicationBuilder"/>.
@@ -45,6 +47,12 @@ internal static class ServiceExtensions
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
         builder.Services.AddHealthChecks();
+
+        builder.Services
+            .AddOptions<ApiSettings>()
+            .BindConfiguration(WellKnown.ConfigSections.Api)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         return builder;
     }
