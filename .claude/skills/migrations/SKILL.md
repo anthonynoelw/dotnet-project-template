@@ -54,7 +54,7 @@ Classify every migration before writing it. The class determines the deployment 
 ```
 1. Make model change
         ↓
-2. dotnet ef migrations add <MigrationName> --project src/MyApp.Infrastructure
+2. dotnet ef migrations add <MigrationName> --project Src/MyApp.Infrastructure
         ↓
 3. Review the generated migration — never accept generated code blindly
         ↓

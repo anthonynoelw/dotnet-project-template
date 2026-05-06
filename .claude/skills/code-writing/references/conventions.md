@@ -90,7 +90,7 @@ namespace MyApp.Orders.Services
 ### Namespace mirrors folder structure
 
 ```
-src/
+Src/
   MyApp.Orders/
     Services/
       OrderService.cs        → namespace MyApp.Orders.Services
@@ -677,7 +677,7 @@ Always include a ticket or author reference:
 
 ```
 YourSolution/
-├── src/
+├── Src/
 │   ├── YourApp.Api/                  # Minimal API / controllers, middleware, Program.cs
 │   ├── YourApp.Application/          # Services, use cases, validators, DTOs
 │   ├── YourApp.Domain/               # Entities, value objects, domain events, enums

@@ -104,13 +104,13 @@ Always generate and read the SQL script before applying to any shared environmen
 ```bash
 # Idempotent script (safe to run multiple times — checks __EFMigrationsHistory)
 dotnet ef migrations script --idempotent \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api \
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api \
   --output migrations-preview.sql
 
 # Script for a specific range
 dotnet ef migrations script PreviousMigrationName CurrentMigrationName \
-  --project src/MyApp.Infrastructure \
+  --project Src/MyApp.Infrastructure \
   --output migrations-preview.sql
 ```
 
@@ -130,8 +130,8 @@ Read `migrations-preview.sql` and verify:
 
 ```bash
 # After resolving model conflicts, remove the snapshot and regenerate
-dotnet ef migrations remove --project src/MyApp.Infrastructure
-dotnet ef migrations add <MigrationName> --project src/MyApp.Infrastructure
+dotnet ef migrations remove --project Src/MyApp.Infrastructure
+dotnet ef migrations add <MigrationName> --project Src/MyApp.Infrastructure
 ```
 
 ---
@@ -149,42 +149,42 @@ dotnet ef migrations add <MigrationName> --project src/MyApp.Infrastructure
 ```bash
 # Add a migration
 dotnet ef migrations add <Name> \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Apply all pending migrations
 dotnet ef database update \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Roll back to a specific migration
 dotnet ef database update <MigrationName> \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Roll back ALL migrations (empty database)
 dotnet ef database update 0 \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Remove the last unapplied migration
 dotnet ef migrations remove \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # List migrations and their applied status
 dotnet ef migrations list \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Generate idempotent SQL script for all pending
 dotnet ef migrations script --idempotent \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api \
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api \
   --output pending.sql
 
 # Generate script for a specific range
 dotnet ef migrations script <From> <To> \
-  --project src/MyApp.Infrastructure \
+  --project Src/MyApp.Infrastructure \
   --output range.sql
 ```

@@ -29,8 +29,9 @@ A proven layered structure that scales with your project:
 
 ### Testing
 
-- **xUnit** — Ready for unit tests
-- **WebApplicationFactory** — Scaffold for integration tests
+- **Unit** (`Tests/Unit/`) — Isolated logic tests with xUnit, Moq, and FluentAssertions
+- **Integration** (`Tests/Integration/`) — HTTP-level API tests with `WebApplicationFactory` (scaffolded, no tests yet)
+- **Application** (`Tests/Application/`) — Full in-memory app tests with real middleware via `ApplicationFixture` and `ApplicationTestBase`
 
 ## Getting started
 
@@ -72,7 +73,7 @@ dotnet run --project Src/Agent/Agent.csproj
 ```
 
 API: `http://localhost:5000`  
-OpenAPI docs: `https://localhost:5001/openapi` (Development only)
+OpenAPI docs: `/openapi/v1.json` (Development only)
 
 ### With Docker
 
@@ -90,7 +91,7 @@ docker-compose -f Docker/docker-compose.yml up
 - ASP.NET Core API with OpenAPI support
 - Background service template
 - HTTPS redirection
-- Structured logging ready (ILogger)
+- Serilog structured logging (enriched with machine name, environment, and HTTP request context)
 
 ❌ **Intentionally left blank** (add as you need):
 - Domain models and entities

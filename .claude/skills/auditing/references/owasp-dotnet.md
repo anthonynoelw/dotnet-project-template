@@ -776,7 +776,7 @@ app.Use(async (context, next) =>
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     context.Response.Headers["Permissions-Policy"] = "geolocation=(), microphone=()";
     context.Response.Headers["Content-Security-Policy"] =
-        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:";
+        "default-Src 'self'; script-Src 'self'; style-Src 'self'; img-Src 'self' data:";
     await next();
 });
 

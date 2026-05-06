@@ -37,6 +37,7 @@ public partial class Program
         catch (Exception ex)
         {
             Log.Fatal(ex, "Application terminated unexpectedly");
+            throw;
         }
         finally
         {

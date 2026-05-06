@@ -44,7 +44,7 @@ Domain ← Application ← Infrastructure ← Api
 - **Domain** (`Src/Domain/`) — Business entities, domain exceptions, pure .NET with no external dependencies.
 - **Application** (`Src/Application/`) — Use cases, CQRS handlers, validators. Currently empty; intended for MediatR commands/queries when added.
 - **Infrastructure** (`Src/Infrastructure/`) — Data access, external service clients. Currently empty; EF Core + repositories are a planned addition.
-- **Api** (`Src/Api/`) — ASP.NET Core 10 minimal API entry point. Hosts REST endpoints, OpenAPI, versioning, Serilog, and global exception handling.
+- **Api** (`Src/Api/`) — ASP.NET Core 10 MVC controller-based API. Hosts REST endpoints, OpenAPI, versioning, Serilog, and global exception handling.
 - **Agent** (`Src/Agent/`) — Separate Worker Service executable for background jobs and scheduled tasks. Shares no startup code with Api.
 
 ### Exception handling pipeline
@@ -75,7 +75,7 @@ Both return a JSON body via `UIResponseWriter.WriteHealthCheckUIResponse` (`AspN
 Future readiness checks (EF Core, Redis, etc.) attach in `ServiceExtensions.AddApiServices()`:
 ```csharp
 builder.Services.AddHealthChecks()
-    .AddDbContextCheck<AppDbContext>(tags: ["ready"]);
+    .AddDbContextCheck<AppDbContext>(tags: [WellKnown.HealthCheckTags.Ready]);
 ```
 
 ### API versioning
@@ -101,7 +101,7 @@ Settings classes live in `Src/<Project>/Settings/` and use `[Required]`, `[Range
 
 ### Logging
 
-Both Api and Agent use **Serilog** configured from `appsettings.json`. Enriched with machine name, environment name, and HTTP request context. Do not use `ILogger` from Microsoft.Extensions.Logging directly — wire through Serilog enrichment.
+Both Api and Agent use **Serilog** configured from `appsettings.json`. Both are enriched with log context, machine name, and environment name via `AddSerilogLogging()`. The Api additionally enriches each request with `RequestHost`, `RequestScheme`, and `UserAgent` via `UseSerilogRequestLogging` in `UseApiPipeline()`. Do not use `ILogger` from Microsoft.Extensions.Logging directly — wire through Serilog enrichment.
 
 ### Service registration pattern
 

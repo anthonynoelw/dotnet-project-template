@@ -22,22 +22,22 @@ There are three levels of rollback, depending on how far the deployment progress
 ```bash
 # List all migrations and their current applied status
 dotnet ef migrations list \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Roll back to a specific migration (runs Down() for all migrations after it)
 dotnet ef database update AddOrderStatusIndex \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Roll back ALL migrations — leaves an empty database
 dotnet ef database update 0 \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # Generate a DOWN script without applying it
 dotnet ef migrations script CurrentMigration PreviousMigration \
-  --project src/MyApp.Infrastructure \
+  --project Src/MyApp.Infrastructure \
   --output rollback.sql
 ```
 
@@ -227,8 +227,8 @@ dotnet ef migrations list  # all should show as Applied
 
 # 3. Create a single consolidated migration
 dotnet ef migrations add InitialSchema \
-  --project src/MyApp.Infrastructure \
-  --startup-project src/MyApp.Api
+  --project Src/MyApp.Infrastructure \
+  --startup-project Src/MyApp.Api
 
 # 4. The generated migration contains all current tables.
 # Manually add the __EFMigrationsHistory insertion to skip it in existing DBs:

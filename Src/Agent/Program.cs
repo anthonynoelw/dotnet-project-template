@@ -34,6 +34,7 @@ public static class Program
         catch (Exception ex)
         {
             Log.Fatal(ex, "Agent terminated unexpectedly");
+            throw;
         }
         finally
         {

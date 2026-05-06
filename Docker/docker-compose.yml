@@ -4,10 +4,10 @@ services:
   api:
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Docker/Dockerfile
       args:
         PROJECT_NAME: YourProject
-        PROJECT_PATH: src/YourProject
+        PROJECT_PATH: Src/YourProject
         DOTNET_VERSION: "10.0"
     container_name: yourproject-api
     ports:
@@ -18,7 +18,7 @@ services:
     volumes:
       - ..:/app:cached
     # Uncomment to enable hot reload during development
-    # command: dotnet watch run --project src/YourProject/YourProject.csproj
+    # command: dotnet watch run --project Src/YourProject/YourProject.csproj
 
   # Example: Build a different project (e.g., background worker)
   # worker:
@@ -27,7 +27,7 @@ services:
   #     dockerfile: docker/Dockerfile
   #     args:
   #       PROJECT_NAME: YourProject.Worker
-  #       PROJECT_PATH: src/YourProject.Worker
+  #       PROJECT_PATH: Src/YourProject.Worker
   #       DOTNET_VERSION: "10.0"
   #   container_name: yourproject-worker
   #   environment:

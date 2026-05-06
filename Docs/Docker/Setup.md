@@ -71,7 +71,7 @@ docker-compose -f Docker/docker-compose.yml up api
 | Arg | Default | Description |
 |-----|---------|-------------|
 | `PROJECT_NAME` | `YourProject` | The project name (used for .csproj and .dll) |
-| `PROJECT_PATH` | `src/YourProject` | Path to the project directory relative to repo root |
+| `PROJECT_PATH` | `Src/YourProject` | Path to the project directory relative to repo root |
 | `DOTNET_VERSION` | `10.0` | .NET SDK/runtime version |
 
 ## Expected Project Structure
