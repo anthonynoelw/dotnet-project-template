@@ -145,6 +145,9 @@ dotnet_diagnostic.SA1310.severity = none
 # SA1313: Record primary constructor parameters define properties and use PascalCase by convention
 dotnet_diagnostic.SA1313.severity = none
 
+# SA1206: 'public required' ordering is idiomatic C# 11; StyleCop's preference for 'required public' is not followed
+dotnet_diagnostic.SA1206.severity = none
+
 #### Naming Conventions ####
 
 # Styles

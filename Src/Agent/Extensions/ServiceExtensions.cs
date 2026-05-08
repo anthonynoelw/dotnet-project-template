@@ -1,8 +1,5 @@
 namespace Agent.Extensions;
 
-using Microsoft.Extensions.Options;
-
-using Agent;
 using Agent.Settings;
 using Domain;
 
