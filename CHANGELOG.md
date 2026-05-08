@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Generated from [Conventional Commits](https://www.conventionalcommits.org/) via [release-please](https://github.com/googleapis/release-please).
 
+## [1.1.0](https://github.com/anthonynoelw/dotnet-project-template/compare/v1.0.0...v1.1.0) (2026-05-08)
+
+
+### Features
+
+* added must haves (described in TODO.md) ([6065a0d](https://github.com/anthonynoelw/dotnet-project-template/commit/6065a0dbbaf86bfe576819f11a46cd811ea92f2e))
+
 ## [Unreleased]
 
 ### Added
