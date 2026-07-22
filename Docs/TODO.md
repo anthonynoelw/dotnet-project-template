@@ -35,19 +35,13 @@ Patterns and infrastructure that any real feature will immediately need.
 
 - [ ] **EF Core + DbContext + Migration Infrastructure** — The Infrastructure project is empty. Add EF Core, a base `AppDbContext`, an `IDbContext` interface, and migration scaffolding so adopters can immediately add entities.
 
-- [ ] **CQRS via MediatR** — The Application layer is empty. Wire up MediatR with `IRequest`/`IRequestHandler` base types, a pipeline behavior, and one example command and one example query.
-
-- [ ] **FluentValidation + MediatR Pipeline Behavior** — Add `AbstractValidator<T>` integrated as a MediaR pipeline behavior so validation runs automatically for every command and query.
-
 - [ ] **Repository Pattern Interfaces** — Define `IRepository<T>` and `IUnitOfWork` in Domain; implement them in Infrastructure. Without these, Infrastructure has no contract to fulfil.
 
 - [ ] **OpenTelemetry (Traces + Metrics)** — Add `OpenTelemetry.Extensions.Hosting` with OTLP exporter configured in both Api and Agent. Required for distributed tracing and production observability.
 
 - [ ] **Scalar / Swagger UI** — `Microsoft.AspNetCore.OpenApi` is referenced but only `MapOpenApi()` is called. Add Scalar or Swashbuckle so developers can explore the API immediately on first run.
 
-- [ ] **CORS Configuration** — Add a named CORS policy wired through configuration. Any frontend-connected service will need this immediately.
-
-- [ ] **Rate Limiting** — Add a sliding window policy via `Microsoft.AspNetCore.RateLimiting` (ships in-box in .NET 10). Removing it later is trivial; adding it after launch is not.
+- [ ] **Rate Limiting (Can Have)** — Add distributed rate limiting backed by Redis (e.g. via `RedisRateLimiting` or a custom `RateLimiterPolicy` with `StackExchange.Redis`). Redis keeps limits consistent across multiple instances, unlike the in-memory `Microsoft.AspNetCore.RateLimiting` middleware. Removing it later is trivial; adding it after launch is not.
 
 - [ ] **`Directory.Build.props` for Shared MSBuild Settings** — Centralise `<Nullable>`, `<ImplicitUsings>`, `<TreatWarningsAsErrors>`, and StyleCop references here. Currently every `.csproj` repeats these properties.
 
@@ -60,6 +54,8 @@ Patterns and infrastructure that any real feature will immediately need.
 - [ ] **Object Mapping (Mapster)** — Add Mapster for DTO ↔ domain mapping with one example mapping config. Preferred over AutoMapper for .NET 10 (no reflection cost at runtime).
 
 - [ ] **Idempotency Middleware** — An `Idempotency-Key` header middleware is a common requirement for payment and order APIs. Easy to include as an opt-in middleware; hard to add after the API is in production.
+  
+- [ ] **Rate Limiting** — Add redis rate limiting.
 
 - [ ] **Outbox Pattern Stub** — If the Agent/Worker project is for event processing, add an outbox table and a hosted service that polls it. Prevents message loss on process restart.
 
