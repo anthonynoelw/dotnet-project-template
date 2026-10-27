@@ -1,4 +1,4 @@
-# Locksmith — Architecture Overview
+# Architecture Overview
 
 Locksmith is an ASP.NET Core REST API that manages the full lifecycle of API keys:
 issuance, authentication, rate limiting, rotation, and revocation.
